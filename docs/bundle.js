@@ -13,7 +13,6 @@ const app = module.exports = function() {
 
     function clickHandle(pos) {
       morphdom(el, render(pos))
-      console.log(pos.x)
     }
 
     const pinStyle = `top:${(pinPos.y - 1) * 16}px;left:${(pinPos.x - 1) * 16}px;`
