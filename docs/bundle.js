@@ -1,58 +1,99 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var bel = require('bel')
-var morphdom = require('morphdom')
+var yo = require('yo-yo')
 var matrix = require('../index.js')
 
-const app = module.exports = function() {
-  var el = render({ x: 1, y: 20 })
+var el = matrixInput({ x: 1, y: 20 })
 
-  function render(pinPos) {
-    function clickHover(pos) {
-      // console.log('Hover', pos)
-    }
-
-    function handleClick(pos) {
-      morphdom(el, render(pos))
-    }
-
-    function handleSubmit(e) {
-      e.preventDefault();
-
-      console.log('importance', form.importance.value)
-      console.log('urgency', form.urgency.value)
-    }
-
-    const pinStyle = `top:${(pinPos.y - 1) * 16}px;left:${(pinPos.x - 1) * 16}px;`
-    const pin = bel`<span class="pin" style="${pinStyle}">📍</span>`
-
-    return bel`<div class="app">
-      ${matrix(160, clickHover, handleClick)}
-      ${pin}
-      <form id="form" onsubmit=${handleSubmit}>
-        <input type="range" name="importance" min="1" max="20" step="1" value=${pinPos.x} />
-        <input type="range" name="urgency" min="5" max="100" step="5" value=${(21 - pinPos.y) * 5} />
-        <button type="submit">Send</button>
-      </form>
-    </div>`
+function matrixInput (pinPos) {
+  function handleHover (pos) {
+    // console.log('Hover', pos)
   }
 
-  return el
+  function handleClick (pos) {
+    yo.update(el, matrixInput(pos))
+  }
+
+  function handleSubmit (e) {
+    e.preventDefault()
+
+    console.log('importance', form.importance.value)
+    console.log('urgency', form.urgency.value)
+  }
+
+  const pinStyle = `top:${(pinPos.y - 1) * 16}px;left:${(pinPos.x - 1) * 16}px;`
+  const pin = (function () {
+      
+      var ac = require('/Users/tgfjt/workspace/bel-matrix/node_modules/yo-yoify/lib/appendChild.js')
+      var bel0 = document.createElement("span")
+bel0.setAttribute("style", arguments[0])
+bel0.setAttribute("class", "pin")
+ac(bel0, ["️️㊙️"])
+      return bel0
+    }(pinStyle))
+
+  return (function () {
+      
+      var ac = require('/Users/tgfjt/workspace/bel-matrix/node_modules/yo-yoify/lib/appendChild.js')
+      var bel10 = document.createElement("div")
+bel10.setAttribute("class", "app")
+var bel0 = document.createElement("div")
+bel0.setAttribute("class", "name-importance")
+ac(bel0, ["importance"])
+var bel1 = document.createElement("div")
+bel1.setAttribute("class", "name-urgency")
+ac(bel1, ["urgency"])
+var bel9 = document.createElement("form")
+bel9.setAttribute("id", "form")
+bel9["onsubmit"] = arguments[4]
+var bel8 = document.createElement("div")
+bel8.setAttribute("class", "forminner")
+var bel4 = document.createElement("div")
+bel4.setAttribute("class", "formgroup")
+var bel2 = document.createElement("input")
+bel2.setAttribute("type", "range")
+bel2.setAttribute("id", "importance")
+bel2.setAttribute("name", "importance")
+bel2.setAttribute("min", "1")
+bel2.setAttribute("max", "20")
+bel2.setAttribute("step", "1")
+bel2.setAttribute("value", arguments[0])
+var bel3 = document.createElement("output")
+bel3.setAttribute("htmlFor", "importance")
+ac(bel3, [arguments[1]])
+ac(bel4, ["\n          ",bel2,"\n          ",bel3,"\n        "])
+var bel7 = document.createElement("div")
+bel7.setAttribute("class", "formgroup")
+var bel5 = document.createElement("input")
+bel5.setAttribute("type", "range")
+bel5.setAttribute("name", "urgency")
+bel5.setAttribute("min", "5")
+bel5.setAttribute("max", "100")
+bel5.setAttribute("step", "5")
+bel5.setAttribute("value", arguments[2])
+var bel6 = document.createElement("output")
+bel6.setAttribute("htmlFor", "urgency")
+ac(bel6, [arguments[3]])
+ac(bel7, ["\n          ",bel5,"\n          ",bel6,"\n        "])
+ac(bel8, ["\n        ",bel4,"\n        ",bel7,"\n      "])
+ac(bel9, ["\n      ",bel8,"\n    "])
+ac(bel10, ["\n    ",arguments[5],"\n    ",arguments[6],"\n    ",bel0,"\n    ",bel1,"\n    ",bel9,"\n  "])
+      return bel10
+    }(pinPos.x,pinPos.x,(21 - pinPos.y) * 5,(21 - pinPos.y) * 5,handleSubmit,matrix(160, handleClick, handleHover),pin))
 }
 
-document.getElementById('app-root').appendChild(app())
-},{"../index.js":2,"bel":3,"morphdom":10}],2:[function(require,module,exports){
-var bel = require('bel')
+document.getElementById('app-root').appendChild(el)
+
+},{"../index.js":2,"/Users/tgfjt/workspace/bel-matrix/node_modules/yo-yoify/lib/appendChild.js":16,"yo-yo":14}],2:[function(require,module,exports){
+var bel = {}
 var raf = require('raf')
 
-function pathLine(size) {
+function pathLine (size) {
   return `M ${size} 0 L 0 0 0 ${size}`
 }
 
-function noop() {
+function noop () {}
 
-}
-
-module.exports = function (size, hover, click) {
+module.exports = function (size, click, hover) {
   var smallSize = Math.floor(size / 10)
   var small = pathLine(smallSize)
   var normal = pathLine(size)
@@ -61,7 +102,14 @@ module.exports = function (size, hover, click) {
   const handleHover = hover ? hover : noop
   const handleClick = click ? click : noop
 
-  function mousemove(e) {
+  function mousemove (e) {
+    raf(function () {
+      handleHover(pos)
+    })
+  }
+
+  function here (e) {
+    e.preventDefault()
     var rect = e.target.getBoundingClientRect()
     var x = e.clientX + 1 - rect.left
     var y = e.clientY + 1 - rect.top
@@ -69,39 +117,64 @@ module.exports = function (size, hover, click) {
     var gridX = x < 0 ? 0 : Math.ceil(x / smallSize)
     var gridY = y < 0 ? 0 : Math.ceil(y / smallSize)
 
-    raf(function() {
-      pos.x = gridX
-      pos.y = gridY
-      handleHover(pos)
-    })
-  }
+    pos.x = gridX
+    pos.y = gridY
 
-  function here(e) {
-    e.preventDefault()
     handleClick(pos)
   }
 
-  var el = bel`<div style="width:100%;height:100%;"
-    onclick=${here}
-    onmousemove=${mousemove}>
-    <svg width="100%" height="100%">
-      <defs>
-        <pattern id="smallGridLine" width="${smallSize}" height="${smallSize}" patternUnits="userSpaceOnUse">
-          <path d="${small}" fill="none" stroke="gray" stroke-width="0.25" class="s" />
-        </pattern>
-        <pattern id="gridLine" width="${size}" height="${size}" patternUnits="userSpaceOnUse">
-          <rect width="${size}" height="${size}" fill="url(#smallGridLine)"/>
-          <path d="${normal}" fill="none" stroke="gray" stroke-width="1"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#gridLine)" />
-    </svg>
-  </div>`
+  var el = (function () {
+      
+      var ac = require('/Users/tgfjt/workspace/bel-matrix/node_modules/yo-yoify/lib/appendChild.js')
+      var bel8 = document.createElement("div")
+bel8.setAttribute("style", "width:100%;height:100%;cursor:pointer;")
+bel8["onclick"] = arguments[8]
+bel8["onmousemove"] = arguments[9]
+var bel7 = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+bel7.setAttributeNS(null, "width", "100%")
+bel7.setAttributeNS(null, "height", "100%")
+var bel5 = document.createElementNS("http://www.w3.org/2000/svg", "defs")
+var bel1 = document.createElementNS("http://www.w3.org/2000/svg", "pattern")
+bel1.setAttributeNS(null, "id", "smallGridLine")
+bel1.setAttributeNS(null, "width", arguments[1])
+bel1.setAttributeNS(null, "height", arguments[2])
+bel1.setAttributeNS(null, "patternUnits", "userSpaceOnUse")
+var bel0 = document.createElementNS("http://www.w3.org/2000/svg", "path")
+bel0.setAttributeNS(null, "d", arguments[0])
+bel0.setAttributeNS(null, "fill", "none")
+bel0.setAttributeNS(null, "stroke", "gray")
+bel0.setAttributeNS(null, "stroke-width", "0.25")
+bel0.setAttributeNS(null, "class", "s")
+ac(bel1, ["\n          ",bel0,"\n        "])
+var bel4 = document.createElementNS("http://www.w3.org/2000/svg", "pattern")
+bel4.setAttributeNS(null, "id", "gridLine")
+bel4.setAttributeNS(null, "width", arguments[6])
+bel4.setAttributeNS(null, "height", arguments[7])
+bel4.setAttributeNS(null, "patternUnits", "userSpaceOnUse")
+var bel2 = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+bel2.setAttributeNS(null, "width", arguments[3])
+bel2.setAttributeNS(null, "height", arguments[4])
+bel2.setAttributeNS(null, "fill", "url(#smallGridLine)")
+var bel3 = document.createElementNS("http://www.w3.org/2000/svg", "path")
+bel3.setAttributeNS(null, "d", arguments[5])
+bel3.setAttributeNS(null, "fill", "none")
+bel3.setAttributeNS(null, "stroke", "gray")
+bel3.setAttributeNS(null, "stroke-width", "1")
+ac(bel4, ["\n          ",bel2,"\n          ",bel3,"\n        "])
+ac(bel5, ["\n        ",bel1,"\n        ",bel4,"\n      "])
+var bel6 = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+bel6.setAttributeNS(null, "width", "100%")
+bel6.setAttributeNS(null, "height", "100%")
+bel6.setAttributeNS(null, "fill", "url(#gridLine)")
+ac(bel7, ["\n      ",bel5,"\n      ",bel6,"\n    "])
+ac(bel8, ["\n    ",bel7,"\n  "])
+      return bel8
+    }(small,smallSize,smallSize,size,size,normal,size,size,here,mousemove))
 
   return el
 }
 
-},{"bel":3,"raf":13}],3:[function(require,module,exports){
+},{"/Users/tgfjt/workspace/bel-matrix/node_modules/yo-yoify/lib/appendChild.js":16,"raf":13}],3:[function(require,module,exports){
 var document = require('global/document')
 var hyperx = require('hyperx')
 var onload = require('on-load')
@@ -1658,4 +1731,113 @@ module.exports.polyfill = function() {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"performance-now":12}]},{},[1]);
+},{"performance-now":12}],14:[function(require,module,exports){
+var bel = require('bel') // turns template tag into DOM elements
+var morphdom = require('morphdom') // efficiently diffs + morphs two DOM elements
+var defaultEvents = require('./update-events.js') // default events to be copied when dom elements update
+
+module.exports = bel
+
+// TODO move this + defaultEvents to a new module once we receive more feedback
+module.exports.update = function (fromNode, toNode, opts) {
+  if (!opts) opts = {}
+  if (opts.events !== false) {
+    if (!opts.onBeforeElUpdated) opts.onBeforeElUpdated = copier
+  }
+
+  return morphdom(fromNode, toNode, opts)
+
+  // morphdom only copies attributes. we decided we also wanted to copy events
+  // that can be set via attributes
+  function copier (f, t) {
+    // copy events:
+    var events = opts.events || defaultEvents
+    for (var i = 0; i < events.length; i++) {
+      var ev = events[i]
+      if (t[ev]) { // if new element has a whitelisted attribute
+        f[ev] = t[ev] // update existing element
+      } else if (f[ev]) { // if existing element has it and new one doesnt
+        f[ev] = undefined // remove it from existing element
+      }
+    }
+    var oldValue = f.value
+    var newValue = t.value
+    // copy values for form elements
+    if ((f.nodeName === 'INPUT' && f.type !== 'file') || f.nodeName === 'SELECT') {
+      if (!newValue) {
+        t.value = f.value
+      } else if (newValue !== oldValue) {
+        f.value = newValue
+      }
+    } else if (f.nodeName === 'TEXTAREA') {
+      if (t.getAttribute('value') === null) f.value = t.value
+    }
+  }
+}
+
+},{"./update-events.js":15,"bel":3,"morphdom":10}],15:[function(require,module,exports){
+module.exports = [
+  // attribute events (can be set with attributes)
+  'onclick',
+  'ondblclick',
+  'onmousedown',
+  'onmouseup',
+  'onmouseover',
+  'onmousemove',
+  'onmouseout',
+  'ondragstart',
+  'ondrag',
+  'ondragenter',
+  'ondragleave',
+  'ondragover',
+  'ondrop',
+  'ondragend',
+  'onkeydown',
+  'onkeypress',
+  'onkeyup',
+  'onunload',
+  'onabort',
+  'onerror',
+  'onresize',
+  'onscroll',
+  'onselect',
+  'onchange',
+  'onsubmit',
+  'onreset',
+  'onfocus',
+  'onblur',
+  'oninput',
+  // other common events
+  'oncontextmenu',
+  'onfocusin',
+  'onfocusout'
+]
+
+},{}],16:[function(require,module,exports){
+module.exports = function yoyoifyAppendChild (el, childs) {
+  for (var i = 0; i < childs.length; i++) {
+    var node = childs[i]
+    if (Array.isArray(node)) {
+      yoyoifyAppendChild(el, node)
+      continue
+    }
+    if (typeof node === 'number' ||
+      typeof node === 'boolean' ||
+      node instanceof Date ||
+      node instanceof RegExp) {
+      node = node.toString()
+    }
+    if (typeof node === 'string') {
+      if (el.lastChild && el.lastChild.nodeName === '#text') {
+        el.lastChild.nodeValue += node
+        continue
+      }
+      node = document.createTextNode(node)
+    }
+    if (node && node.nodeType) {
+      el.appendChild(node)
+    }
+  }
+}
+
+},{}]},{},[1]);

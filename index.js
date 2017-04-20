@@ -1,15 +1,13 @@
 var bel = require('bel')
 var raf = require('raf')
 
-function pathLine(size) {
+function pathLine (size) {
   return `M ${size} 0 L 0 0 0 ${size}`
 }
 
-function noop() {
+function noop () {}
 
-}
-
-module.exports = function (size, hover, click) {
+module.exports = function (size, click, hover) {
   var smallSize = Math.floor(size / 10)
   var small = pathLine(smallSize)
   var normal = pathLine(size)
@@ -18,7 +16,14 @@ module.exports = function (size, hover, click) {
   const handleHover = hover ? hover : noop
   const handleClick = click ? click : noop
 
-  function mousemove(e) {
+  function mousemove (e) {
+    raf(function () {
+      handleHover(pos)
+    })
+  }
+
+  function here (e) {
+    e.preventDefault()
     var rect = e.target.getBoundingClientRect()
     var x = e.clientX + 1 - rect.left
     var y = e.clientY + 1 - rect.top
@@ -26,19 +31,13 @@ module.exports = function (size, hover, click) {
     var gridX = x < 0 ? 0 : Math.ceil(x / smallSize)
     var gridY = y < 0 ? 0 : Math.ceil(y / smallSize)
 
-    raf(function() {
-      pos.x = gridX
-      pos.y = gridY
-      handleHover(pos)
-    })
-  }
+    pos.x = gridX
+    pos.y = gridY
 
-  function here(e) {
-    e.preventDefault()
     handleClick(pos)
   }
 
-  var el = bel`<div style="width:100%;height:100%;"
+  var el = bel`<div style="width:100%;height:100%;cursor:pointer;"
     onclick=${here}
     onmousemove=${mousemove}>
     <svg width="100%" height="100%">

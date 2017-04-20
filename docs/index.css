@@ -15,6 +15,55 @@ body {
   line-height: 1;
 }
 
-[type="range"] {
-  opacity: .1;
+.app form {
+  padding: 1rem 0;
+  margin-top: 1rem;
+}
+
+.app [type="range"] {
+  opacity: .8;
+}
+
+.app output { 
+  position: absolute;
+  text-align: center; 
+  display: block; 
+  font: bold .5rem/2 courier;
+  bottom: 75%;
+  left: 0;
+  margin-left: -1%;
+  color: gray;
+}
+
+.app output:before { 
+  content: attr(htmlfor);
+  margin-right: .5rem;
+  font-size: x-small;
+  color: gray;
+}
+
+.app .forminner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.app .formgroup {
+  position: relative;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.app .name-importance,
+.app .name-urgency {
+  position: absolute;
+  font: 300 .5rem/2 courier;
+}
+
+.app .name-urgency {
+  -webkit-writing-mode: vertical-rl;
+      -ms-writing-mode: tb-rl;
+          writing-mode: vertical-rl;
+  text-orientation: mixed;
+  bottom: 0;
+  left: -1.5em;
 }
