@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "wzrd example/index.js:bundle.js",
-    "build": "browserify example/index.js -o bundle.js"
+    "start": "cd docs && wzrd index.js:bundle.js",
+    "build": "browserify docs/index.js -o docs/bundle.js"
   },
   "keywords": [],
   "author": "",
